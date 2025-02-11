@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @SpringBootApplication
 public class CruddemoApplication {
 
@@ -32,8 +34,30 @@ public class CruddemoApplication {
 
 			// createInstructorWithCourses(appDAO);
 
-			findInstructorWithCourses(appDAO);
+			// findInstructorWithCourses(appDAO);
+
+			findCoursesForInstructor(appDAO);
 		};
+	}
+
+	private void findCoursesForInstructor(AppDAO appDAO) {
+
+		int id = 1;
+		// find the instructor
+		System.out.println("Finding instructor id: " + id);
+		Instructor instructor = appDAO.findInstructorById(id);
+
+		System.out.println("Found instructor: " + instructor);
+
+		// set courses for the instructor from db
+		List<Course> courses = appDAO.findCoursesByInstructorId(id);
+
+		// associate the objects
+		instructor.setCourses(courses);
+
+		System.out.println("Get associated courses: " + instructor.getCourses());
+
+		System.out.println("Done!");
 	}
 
 	private void findInstructorWithCourses(AppDAO appDAO) {
@@ -41,8 +65,8 @@ public class CruddemoApplication {
 		int id = 1;
 		System.out.println("Finding instructor id: " + id);
 		Instructor instructor = appDAO.findInstructorById(id);
-
 		System.out.println("Found instructor: " + instructor);
+
 		System.out.println("Get associated courses: " + instructor.getCourses());
 
 		System.out.println("Done!");

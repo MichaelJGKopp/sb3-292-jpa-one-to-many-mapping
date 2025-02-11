@@ -9,20 +9,6 @@ import java.util.List;
 @Table(name="instructor")
 public class Instructor {
 
-    // annotate the class as an entity and map to db table
-
-    // define the fields
-
-    // annotate the fields with db column names
-
-    // ** set up mapping to InstructorDetail entity
-
-    // create constructors
-
-    // generate getter/setter methods
-
-    // generate toString() method
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -42,7 +28,7 @@ public class Instructor {
     private InstructorDetail instructorDetail;
 
     @OneToMany(mappedBy="instructor",
-            fetch=FetchType.EAGER,
+            fetch=FetchType.LAZY,   // default is FetchType.LAZY already
             cascade={CascadeType.DETACH, CascadeType.MERGE,
                     CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Course> courses;
@@ -136,7 +122,6 @@ public class Instructor {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", instructorDetail=" + instructorDetail +
-                ", courses=" + courses +
                 '}';
     }
 }
