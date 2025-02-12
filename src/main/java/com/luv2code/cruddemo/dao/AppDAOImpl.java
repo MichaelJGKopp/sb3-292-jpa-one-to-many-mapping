@@ -50,6 +50,12 @@ public class AppDAOImpl implements AppDAO {
 
     @Override
     @Transactional
+    public void update(Instructor theInstructor) {
+        entityManager.merge(theInstructor);
+    }
+
+    @Override
+    @Transactional
     public void deleteInstructorById(int theId) {
 
         // retrieve the instructor
