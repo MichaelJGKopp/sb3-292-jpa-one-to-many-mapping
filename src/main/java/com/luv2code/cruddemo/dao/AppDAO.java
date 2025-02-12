@@ -12,9 +12,13 @@ public interface AppDAO {
 
     Instructor findInstructorById(int theId);
 
+    Course findCourseById(int theId);
+
     Instructor findInstructorByIdJoinFetch(int theId);
 
     void update(Instructor theInstructor);
+
+    void update(Course theCourse);
 
     void deleteInstructorById(int theId);
 
