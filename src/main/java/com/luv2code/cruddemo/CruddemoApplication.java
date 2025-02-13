@@ -47,8 +47,51 @@ public class CruddemoApplication {
 
 			// deleteCourse(appDAO);
 
-			createInstructorWithCoursesAndReviews(appDAO);
+			// createInstructorWithCoursesAndReviews(appDAO);
+
+			 deleteReview(appDAO);
+
+			// findCourseById(appDAO);
+
+			// findCourseByIdJoinFetch(appDAO);
 		};
+	}
+
+	private void findCourseByIdJoinFetch(AppDAO appDAO) {
+
+		int courseId = 11;
+		Course course = appDAO.findCourseByIdJoinFetch(courseId);
+		System.out.println("Course with id: " + courseId + " is: " + course + "\n");
+
+		if (course != null) {
+			System.out.println("REVIEWS\n"
+					+ "=".repeat(30) + "\n"
+					+ course.getReviews());
+		}
+	}
+
+	private void findCourseById(AppDAO appDAO) {
+
+		int courseId = 11;
+		Course course = appDAO.findCourseById(courseId);
+		System.out.println("Course with id: " + courseId + " is: " + course + "\n");
+
+		if (course != null) {
+			System.out.println("REVIEWS\n"
+					+ "=".repeat(30) + "\n"
+					+ course.getReviews());
+		}
+	}
+
+	private void deleteReview(AppDAO appDAO) {
+
+		int reviewId = 4;
+		System.out.println("Deleting review id: " + reviewId);
+
+		appDAO.deleteReviewById(reviewId);
+
+		System.out.println("Review with id: " + reviewId
+				+ (appDAO.findReviewById(reviewId) == null ? " deleted!" : " not deleted!"));
 	}
 
 	private void deleteCourse(AppDAO appDAO) {

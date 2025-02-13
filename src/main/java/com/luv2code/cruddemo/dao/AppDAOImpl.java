@@ -3,8 +3,11 @@ package com.luv2code.cruddemo.dao;
 import com.luv2code.cruddemo.entity.Course;
 import com.luv2code.cruddemo.entity.Instructor;
 import com.luv2code.cruddemo.entity.InstructorDetail;
+import com.luv2code.cruddemo.entity.Review;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,8 @@ public class AppDAOImpl implements AppDAO {
 
     // define field for entity manager
     private EntityManager entityManager;
+
+    private static final Logger logger = LoggerFactory.getLogger(AppDAOImpl.class);
 
     // inject entity manager using constructor injection
     @Autowired
@@ -39,6 +44,12 @@ public class AppDAOImpl implements AppDAO {
 
         Course theCourse = entityManager.find(Course.class, theId);
         return theCourse;
+    }
+
+    @Override
+    public Review findReviewById(int theId) {
+
+        return entityManager.find(Review.class, theId);
     }
 
     @Override
@@ -98,6 +109,19 @@ public class AppDAOImpl implements AppDAO {
     }
 
     @Override
+    @Transactional
+    public void deleteReviewById(int theId) {
+
+        Review tempReview = entityManager.find(Review.class, theId);
+        if (tempReview != null) {
+            entityManager.remove(tempReview);
+            logger.info("Deleted review: {}", tempReview);
+        } else {
+            logger.warn("Review not found with id: {}", theId);
+        }
+    }
+
+    @Override
     public InstructorDetail findInstructorDetailById(int theId) {
         return entityManager.find(InstructorDetail.class, theId);
     }
@@ -128,6 +152,19 @@ public class AppDAOImpl implements AppDAO {
         List<Course> courses = query.getResultList();
 
         return courses;
+    }
+
+    @Override
+    public Course findCourseByIdJoinFetch(int courseId) {
+
+        TypedQuery<Course> query = entityManager.createQuery(
+                "SELECT c FROM Course c " +
+                        "JOIN FETCH c.reviews " +
+                        "WHERE c.id=:data", Course.class);
+
+        query.setParameter("data", courseId);
+
+        return query.getSingleResult();
     }
 }
 

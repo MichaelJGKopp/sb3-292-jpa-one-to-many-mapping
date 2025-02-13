@@ -68,6 +68,14 @@ public class Course {
         this.instructor = instructor;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     public void addReview(Review review) {
 
         if (reviews == null) {
