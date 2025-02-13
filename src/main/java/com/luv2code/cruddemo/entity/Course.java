@@ -3,6 +3,7 @@ package com.luv2code.cruddemo.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,8 +33,10 @@ public class Course {
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
-    @OneToMany(mappedBy = "course", // course field in Review entity
+    @OneToMany( fetch = FetchType.LAZY,
+//            mappedBy = "course", // course field in Review entity
             cascade = CascadeType.ALL)
+    @JoinColumn(name="course_id")
     private List<Review> reviews;
 
     public Course() {
@@ -84,7 +87,7 @@ public class Course {
 
         reviews.add(review);
 
-        review.setCourse(this);
+//        review.setCourse(this);
     }
 
     // no instructor in ToString

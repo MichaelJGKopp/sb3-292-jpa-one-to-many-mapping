@@ -22,13 +22,13 @@ public class Review {
     @Column(name="comment")
     private String comment;
 
-    @ManyToOne(cascade = {
-            CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
-    @JoinColumn(name="course_id")
-    private Course course;
+//    @ManyToOne(cascade = {
+//            CascadeType.DETACH,
+//            CascadeType.MERGE,
+//            CascadeType.PERSIST,
+//            CascadeType.REFRESH})
+//    @JoinColumn(name="course_id")
+//    private Course course;
 
     public Review() {
     }
@@ -53,13 +53,13 @@ public class Review {
         this.comment = comment;
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
+//    public Course getCourse() {
+//        return course;
+//    }
+//
+//    public void setCourse(Course course) {
+//        this.course = course;
+//    }
 
     @Override
     public String toString() {

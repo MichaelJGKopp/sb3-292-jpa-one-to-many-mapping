@@ -49,11 +49,11 @@ public class CruddemoApplication {
 
 			// createInstructorWithCoursesAndReviews(appDAO);
 
-			 deleteReview(appDAO);
+			 // deleteReview(appDAO);
 
 			// findCourseById(appDAO);
 
-			// findCourseByIdJoinFetch(appDAO);
+			 findCourseByIdJoinFetch(appDAO);
 		};
 	}
 
