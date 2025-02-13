@@ -8,7 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "course")
@@ -27,6 +31,10 @@ public class Course {
     //(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
+
+    @OneToMany(mappedBy = "course", // course field in Review entity
+            cascade = CascadeType.ALL)
+    private List<Review> reviews;
 
     public Course() {
     }
@@ -58,6 +66,17 @@ public class Course {
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
+    }
+
+    public void addReview(Review review) {
+
+        if (reviews == null) {
+            reviews = new ArrayList<>();
+        }
+
+        reviews.add(review);
+
+        review.setCourse(this);
     }
 
     // no instructor in ToString

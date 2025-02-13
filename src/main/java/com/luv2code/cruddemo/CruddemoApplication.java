@@ -4,6 +4,7 @@ import com.luv2code.cruddemo.dao.AppDAO;
 import com.luv2code.cruddemo.entity.Course;
 import com.luv2code.cruddemo.entity.Instructor;
 import com.luv2code.cruddemo.entity.InstructorDetail;
+import com.luv2code.cruddemo.entity.Review;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,7 +45,9 @@ public class CruddemoApplication {
 
 			// updateCourse(appDAO);
 
-			deleteCourse(appDAO);
+			// deleteCourse(appDAO);
+
+			createInstructorWithCoursesAndReviews(appDAO);
 		};
 	}
 
@@ -150,6 +153,42 @@ public class CruddemoApplication {
 				new Course("java")
 		}) {
 			tempInstructor.addCourse(course);
+		}
+
+		// save the instructor and will cascade save the courses
+		System.out.println("Saving instructor: " + tempInstructor);
+		appDAO.save(tempInstructor);
+		System.out.println("Saved instructor: " + tempInstructor);
+	}
+
+	private void createInstructorWithCoursesAndReviews(AppDAO appDAO) {
+
+		// create the instructor
+		Instructor tempInstructor =
+				new Instructor("Susan", "Public", "susan.public@luv2code.com");
+
+		// create the instructor detail
+		InstructorDetail tempInstructorDetail =
+				new InstructorDetail(
+						"http://www.luv2code.com/youtube",
+						"Video Games");
+
+		// associate the objects
+		tempInstructor.setInstructorDetail(tempInstructorDetail);
+
+		// add some courses
+		for (Course course : new Course[] {
+				new Course("python"),
+				new Course("java")
+		}) {
+			tempInstructor.addCourse(course);
+
+			for (Review review : new Review[] {
+					new Review("Great course!"),
+					new Review("Complex course!"),
+			}) {
+				course.addReview(review);
+			}
 		}
 
 		// save the instructor and will cascade save the courses
