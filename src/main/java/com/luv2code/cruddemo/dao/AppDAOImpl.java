@@ -114,11 +114,18 @@ public class AppDAOImpl implements AppDAO {
 
         Review tempReview = entityManager.find(Review.class, theId);
         if (tempReview != null) {
+            // Debug level: Log additional details before the deletion if needed.
+            logger.debug("Preparing to delete review: {}", tempReview);
+
             entityManager.remove(tempReview);
+
+            // Info level: Log the successful deletion as a normal operational message.
             logger.info("Deleted review: {}", tempReview);
         } else {
+            // Warn level: Log a warning because not finding the review is unexpected.
             logger.warn("Review not found with id: {}", theId);
         }
+
     }
 
     @Override
