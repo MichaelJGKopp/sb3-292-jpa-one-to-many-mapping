@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -220,6 +221,32 @@ public class AppDAOImpl implements AppDAO {
         query.setParameter("data", courseId);
 
         return query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public void deleteStudentById(int theId) {
+        Student tempStudent = entityManager.find(Student.class, theId);
+
+        if (tempStudent == null) {
+            logger.warn("Student with ID {} not found, no deletion performed.", theId);
+            return;
+        }
+
+        // Convert to array to avoid concurrent modification issues
+        List<Course> courses = new ArrayList<>(tempStudent.getCourses());
+        for (Course course : courses) {
+            course.getStudents().remove(tempStudent);
+        }
+
+        entityManager.remove(tempStudent);
+        logger.info("Student with ID {} deleted successfully.", theId);
+    }
+
+    @Override
+    public Student findStudentById(int studentId) {
+
+        return entityManager.find(Student.class, studentId);
     }
 }
 

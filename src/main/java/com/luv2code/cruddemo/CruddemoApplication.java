@@ -62,7 +62,21 @@ public class CruddemoApplication {
 
 //            deleteCourse(appDAO);
 
+            deleteStudent(appDAO);
+
         };
+    }
+
+    private void deleteStudent(AppDAO appDAO) {
+
+        int studentId = 1;
+
+        System.out.println("Deleting student with id: " + studentId);
+
+        appDAO.deleteStudentById(studentId);
+
+        System.out.println("Student with id: " + studentId
+                + (appDAO.findStudentById(studentId) == null ? " deleted!" : " not deleted!"));
     }
 
     // keep cascades on owner side only, no cascade delete
