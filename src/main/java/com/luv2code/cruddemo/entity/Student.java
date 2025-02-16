@@ -36,13 +36,13 @@ public class Student {
 
     @ManyToMany(
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH})   // no delete on cascade
-    @JoinTable(
-            name="course_student",
-            joinColumns=@JoinColumn(name="student_id"),
-            inverseJoinColumns=@JoinColumn(name="course_id")
-    )
+            mappedBy="students")//,
+//            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+//                    CascadeType.DETACH, CascadeType.REFRESH})   // no delete on cascade
+//    @JoinTable(
+//            name="course_student",
+//            joinColumns=@JoinColumn(name="student_id"),
+//            inverseJoinColumns=@JoinColumn(name="course_id"))
     private List<Course> courses;
 
     public Student() {

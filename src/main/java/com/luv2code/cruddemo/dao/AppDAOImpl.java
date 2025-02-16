@@ -176,6 +176,17 @@ public class AppDAOImpl implements AppDAO {
     }
 
     @Override
+    public Course findCourseByIdWithStudents(int courseId) {
+
+        return entityManager.createQuery(
+                        "select c from Course c " +
+                                "LEFT JOIN FETCH c.students " +
+                                "WHERE c.id=:courseId", Course.class)
+                .setParameter("courseId", courseId)
+                .getSingleResult();
+    }
+
+    @Override
     public List<Course> findAllCoursesInclStudents() {
 
         TypedQuery<Course> query = entityManager.createQuery(

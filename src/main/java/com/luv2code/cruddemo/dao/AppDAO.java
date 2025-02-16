@@ -40,6 +40,8 @@ public interface AppDAO {
 
     List<Course> findCourses();
 
+    Course findCourseByIdWithStudents(int courseId);
+
     List<Course> findAllCoursesInclStudents();
 
     List<Course> findCoursesByInstructorId(int id);

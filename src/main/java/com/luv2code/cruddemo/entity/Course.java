@@ -116,8 +116,6 @@ public class Course {
         }
 
         students.add(student);
-
-//        student.addCourse(this);
     }
 
     // no instructor in ToString

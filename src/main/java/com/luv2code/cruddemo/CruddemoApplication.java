@@ -48,9 +48,7 @@ public class CruddemoApplication {
 
             // updateCourse(appDAO);
 
-            // deleteCourse(appDAO);
-
-			 createInstructorWithCoursesAndReviews(appDAO);
+            createInstructorWithCoursesAndReviews(appDAO);
 
             // deleteReview(appDAO);
 
@@ -58,13 +56,17 @@ public class CruddemoApplication {
 
             // findCourseByIdJoinFetch(appDAO);
 
-            addStudentsToCourses(appDAO);
+//             addStudentsToCourses(appDAO);
+
+            addStudentToCourse(appDAO);
+
+//            deleteCourse(appDAO);
 
         };
     }
 
-    @Transactional
-    public void addStudentsToCourses(AppDAO appDAO) {
+    // keep cascades on owner side only, no cascade delete
+    private void addStudentsToCourses(AppDAO appDAO) {
 
         // create Students
         List<Student> students = Arrays.asList(
@@ -74,14 +76,34 @@ public class CruddemoApplication {
 
         // retrieve list of courses with and without students using LEFT JOIN FETCH
         List<Course> courses = appDAO.findAllCoursesInclStudents();
+        courses.forEach(System.out::println);
 
-        // update courses and persist students
+        // save students
+        students.forEach(appDAO::save);
+
+        // associate entities
         for (Course course : courses) {
             for (Student student : students) {
                 course.addStudent(student);
+                student.addCourse(course);
             }
+            students.forEach(System.out::println);
+
+            // update course and persist students
             appDAO.update(course);
         }
+    }
+
+    private void addStudentToCourse(AppDAO appDAO) {
+
+
+        Student fred = new Student("Fred", "Eager", "fred.eager@gmail.com");
+
+        Course pythonCourse = appDAO.findCourseByIdWithStudents(10);
+
+        pythonCourse.addStudent(fred);
+
+        appDAO.update(pythonCourse);
     }
 
     private void findCourseByIdJoinFetch(AppDAO appDAO) {
