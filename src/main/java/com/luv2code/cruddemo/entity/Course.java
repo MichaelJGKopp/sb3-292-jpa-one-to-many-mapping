@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -27,17 +29,26 @@ public class Course {
     @Column(name = "title", length = 128)
     private String title;
 
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH})
     //(fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
-    @OneToMany( fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.LAZY,
 //            mappedBy = "course", // course field in Review entity
             cascade = CascadeType.ALL)
-    @JoinColumn(name="course_id")
+    @JoinColumn(name = "course_id")
     private List<Review> reviews;
+
+    @ManyToMany(
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})   // no delete
+    @JoinTable(
+            name = "course_student",
+            joinColumns = @JoinColumn(name="course_id"),
+            inverseJoinColumns = @JoinColumn(name="student_id"))
+    private List<Student> students;
 
     public Course() {
     }
@@ -79,6 +90,14 @@ public class Course {
         this.reviews = reviews;
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
     public void addReview(Review review) {
 
         if (reviews == null) {
@@ -88,6 +107,17 @@ public class Course {
         reviews.add(review);
 
 //        review.setCourse(this);
+    }
+
+    public void addStudent(Student student) {
+
+        if (students == null) {
+            students = new ArrayList<>();
+        }
+
+        students.add(student);
+
+        student.setCourse(this);
     }
 
     // no instructor in ToString
