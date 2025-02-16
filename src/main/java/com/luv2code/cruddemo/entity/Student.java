@@ -2,6 +2,7 @@ package com.luv2code.cruddemo.entity;
 
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.CascadeType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,6 +35,7 @@ public class Student {
     private String email;
 
     @ManyToMany(
+            fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})   // no delete on cascade
     @JoinTable(
@@ -99,5 +102,13 @@ public class Student {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    public void addCourse(Course course) {
+
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
+        courses.add(course);
     }
 }

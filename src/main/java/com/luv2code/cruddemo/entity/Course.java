@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class Course {
     private List<Review> reviews;
 
     @ManyToMany(
+            fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})   // no delete
     @JoinTable(
@@ -105,8 +107,6 @@ public class Course {
         }
 
         reviews.add(review);
-
-//        review.setCourse(this);
     }
 
     public void addStudent(Student student) {
@@ -117,7 +117,7 @@ public class Course {
 
         students.add(student);
 
-        student.setCourse(this);
+//        student.addCourse(this);
     }
 
     // no instructor in ToString

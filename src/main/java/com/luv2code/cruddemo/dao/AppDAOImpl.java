@@ -4,6 +4,7 @@ import com.luv2code.cruddemo.entity.Course;
 import com.luv2code.cruddemo.entity.Instructor;
 import com.luv2code.cruddemo.entity.InstructorDetail;
 import com.luv2code.cruddemo.entity.Review;
+import com.luv2code.cruddemo.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.slf4j.Logger;
@@ -32,6 +33,20 @@ public class AppDAOImpl implements AppDAO {
     @Transactional
     public void save(Instructor theInstructor) {
         entityManager.persist(theInstructor);
+    }
+
+    @Override
+    @Transactional
+    public void save(Course theCourse) {
+
+        entityManager.persist(theCourse);
+    }
+
+    @Override
+    @Transactional
+    public void save(Student student) {
+
+        entityManager.persist(student);
     }
 
     @Override
@@ -147,6 +162,28 @@ public class AppDAOImpl implements AppDAO {
 
         // delete the instructor detail
         entityManager.remove(tempInstructorDetail);
+    }
+
+    @Override
+    public List<Course> findCourses() {
+
+        TypedQuery<Course> query = entityManager.createQuery(
+                "from Course", Course.class);
+
+        List<Course> courses = query.getResultList();
+
+        return courses;
+    }
+
+    @Override
+    public List<Course> findAllCoursesInclStudents() {
+
+        TypedQuery<Course> query = entityManager.createQuery(
+                "select c from Course c LEFT JOIN FETCH c.students", Course.class);
+
+        List<Course> courses = query.getResultList();
+
+        return courses;
     }
 
     @Override
